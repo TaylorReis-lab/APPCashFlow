@@ -1,14 +1,5 @@
 import { useState } from "react";
-import {
-  Lock,
-  User,
-  ShieldCheck,
-  UserPlus,
-  LogIn,
-  Eye,
-  EyeOff,
-  Globe,
-} from "lucide-react";
+import { Lock, User, ShieldCheck, UserPlus, LogIn, Eye, EyeOff, Globe } from "lucide-react";
 import { apiLogin, apiRegister } from "@/lib/api";
 
 interface LoginProps {
@@ -32,7 +23,7 @@ export function Login({ onSuccess }: LoginProps) {
     if (mode === "login") {
       const res = await apiLogin({ username, password });
       if (res.ok) {
-        localStorage.setItem("CashFlow_user_name", res.data.user.name);
+        localStorage.setItem("cashflow_user_name", res.data.user.name);
         onSuccess(res.data.token);
       } else {
         setError(res.error.message || "Credenciais inválidas.");
@@ -44,13 +35,9 @@ export function Login({ onSuccess }: LoginProps) {
         setLoading(false);
         return;
       }
-      const res = await apiRegister({
-        username,
-        password,
-        name: name || username,
-      });
+      const res = await apiRegister({ username, password, name: name || username });
       if (res.ok) {
-        localStorage.setItem("CashFlow_user_name", res.data.user.name);
+        localStorage.setItem("cashflow_user_name", res.data.user.name);
         onSuccess(res.data.token);
       } else {
         setError(res.error.message || "Erro ao criar conta.");
@@ -67,10 +54,10 @@ export function Login({ onSuccess }: LoginProps) {
           <div className="mb-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-600 p-5 text-white shadow-xl shadow-indigo-200">
             <ShieldCheck size={36} strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight">CashFlow</h1>
-          <p className="text-xs text-slate-500 mt-1 font-medium">
-            Controle Financeiro Profissional
-          </p>
+          <h1 className="text-2xl font-extrabold tracking-tight">
+            Cashflow
+          </h1>
+          <p className="text-xs text-slate-500 mt-1 font-medium">Controle Financeiro Profissional</p>
           <div className="mt-2 flex items-center gap-1.5 text-xs text-emerald-600 font-semibold">
             <Globe size={12} />
             <span>Conexão segura HTTPS • API Real</span>
@@ -83,10 +70,7 @@ export function Login({ onSuccess }: LoginProps) {
           <div className="mb-6 flex gap-1 rounded-2xl bg-slate-100 p-1">
             <button
               type="button"
-              onClick={() => {
-                setMode("login");
-                setError(null);
-              }}
+              onClick={() => { setMode("login"); setError(null); }}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all ${
                 mode === "login"
                   ? "bg-white text-indigo-700 shadow-sm"
@@ -97,10 +81,7 @@ export function Login({ onSuccess }: LoginProps) {
             </button>
             <button
               type="button"
-              onClick={() => {
-                setMode("register");
-                setError(null);
-              }}
+              onClick={() => { setMode("register"); setError(null); }}
               className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold transition-all ${
                 mode === "register"
                   ? "bg-white text-indigo-700 shadow-sm"
@@ -114,14 +95,9 @@ export function Login({ onSuccess }: LoginProps) {
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === "register" && (
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                  Nome
-                </label>
+                <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Nome</label>
                 <div className="relative">
-                  <User
-                    size={16}
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300"
-                  />
+                  <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" />
                   <input
                     type="text"
                     value={name}
@@ -134,14 +110,9 @@ export function Login({ onSuccess }: LoginProps) {
             )}
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Usuário
-              </label>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Usuário</label>
               <div className="relative">
-                <User
-                  size={16}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300"
-                />
+                <User size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" />
                 <input
                   type="text"
                   value={username}
@@ -155,26 +126,17 @@ export function Login({ onSuccess }: LoginProps) {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                Senha
-              </label>
+              <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Senha</label>
               <div className="relative">
-                <Lock
-                  size={16}
-                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300"
-                />
+                <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300" />
                 <input
                   type={showPass ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={
-                    mode === "register" ? "Mínimo 6 caracteres" : "Sua senha"
-                  }
+                  placeholder={mode === "register" ? "Mínimo 6 caracteres" : "Sua senha"}
                   className="h-12 w-full rounded-xl border-none bg-slate-50 pl-10 pr-12 text-sm ring-1 ring-slate-100 focus:ring-2 focus:ring-indigo-400 outline-none transition-all"
                   required
-                  autoComplete={
-                    mode === "login" ? "current-password" : "new-password"
-                  }
+                  autoComplete={mode === "login" ? "current-password" : "new-password"}
                 />
                 <button
                   type="button"
@@ -200,8 +162,8 @@ export function Login({ onSuccess }: LoginProps) {
               {loading
                 ? "Verificando..."
                 : mode === "login"
-                  ? "Entrar"
-                  : "Criar Conta"}
+                ? "Entrar"
+                : "Criar Conta"}
             </button>
           </form>
         </div>

@@ -1,6 +1,6 @@
-# 🏗️ Arquitetura do Sistema CashFlow
+# 🏗️ Arquitetura do Sistema CASHFLOW
 
-Documentação completa da arquitetura do sistema de controle financeiro **CashFlow**.
+Documentação completa da arquitetura do sistema de controle financeiro **CASHFLOW**.
 
 ---
 
@@ -9,7 +9,7 @@ Documentação completa da arquitetura do sistema de controle financeiro **CashF
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│                    CashFlow SYSTEM v2.0                       │
+│                   CASHFLOW SYSTEM v2.0                      │
 │          Sistema de Controle Financeiro Profissional       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -30,8 +30,8 @@ Documentação completa da arquitetura do sistema de controle financeiro **CashF
     └─────────┘   └───────┘   └───────┘   └──────────┘
                                                │
                                         ┌──────▼──────┐
-                                        │ Persistência│
-                                        │   (JSON)    │
+                                        │  MongoDB    │
+                                        │   (NoSQL)   │
                                         │   Volume    │
                                         └─────────────┘
 ```
@@ -41,7 +41,7 @@ Documentação completa da arquitetura do sistema de controle financeiro **CashF
 ## 🗂️ Estrutura de Diretórios
 
 ```
-CashFlow/
+finexa/
 │
 ├── 📱 APP (FRONTEND)
 │   ├── src/
@@ -97,9 +97,12 @@ CashFlow/
 │   │   │   ├── entries.service.js    # Regras de negócio
 │   │   │   └── user.service.js       # Lógica de usuário
 │   │   │
-│   │   ├── models/                    # Acesso a dados (DAO)
-│   │   │   ├── user.model.js         # CRUD users.json
-│   │   │   └── entry.model.js        # CRUD entries.json
+│   │   ├── config/                    # Configurações
+│   │   │   └── database.js           # Conexão MongoDB
+│   │   │
+│   │   ├── models/                    # Schemas Mongoose
+│   │   │   ├── User.model.js         # Schema de usuários
+│   │   │   └── Entry.model.js        # Schema de lançamentos
 │   │   │
 │   │   ├── middlewares/               # Middlewares
 │   │   │   └── auth.middleware.js    # requireAuth (JWT)
@@ -117,7 +120,8 @@ CashFlow/
 │   ├── .env.example                   # Variáveis de ambiente
 │   ├── .dockerignore                  # Arquivos ignorados
 │   ├── README.md                      # Docs da API
-│   └── INSOMNIA_GUIDE.md             # Guia de testes
+│   ├── INSOMNIA_GUIDE.md             # Guia de testes
+│   └── MONGODB_GUIDE.md              # Guia do MongoDB
 │
 └── 📄 DOCS
     ├── README.md                      # Documentação principal
@@ -143,7 +147,7 @@ CashFlow/
      │ (Armazena token)
      ▼
 localStorage
-"CashFlow_api_token"
+"finexa_api_token"
 ```
 
 ### 2. Criar Lançamento
@@ -169,7 +173,8 @@ localStorage
                                                         └────┬─────┘
                                                              │
                                                              ▼
-                                                       entries.json
+                                                        MongoDB
+                                                    (entries collection)
 ```
 
 ### 3. Listar com Filtros
@@ -293,27 +298,27 @@ CLIENT ──GET /api/entries?type=gasto&q=restaurante──► API
 ## 📦 Tecnologias Utilizadas
 
 ### Frontend
-
-| Tecnologia   | Versão  | Uso                |
-| ------------ | ------- | ------------------ |
-| React        | 19.2.3  | UI Library         |
-| TypeScript   | 5.9.3   | Type Safety        |
-| Vite         | 7.2.4   | Build Tool         |
-| Tailwind CSS | 4.1.17  | Styling            |
-| Lucide React | 0.563.0 | Ícones             |
-| Nginx        | alpine  | Web Server + HTTPS |
+| Tecnologia       | Versão  | Uso                          |
+|------------------|---------|------------------------------|
+| React            | 19.2.3  | UI Library                   |
+| TypeScript       | 5.9.3   | Type Safety                  |
+| Vite             | 7.2.4   | Build Tool                   |
+| Tailwind CSS     | 4.1.17  | Styling                      |
+| Lucide React     | 0.563.0 | Ícones                       |
+| Nginx            | alpine  | Web Server + HTTPS           |
 
 ### Backend
-
-| Tecnologia | Versão | Uso                         |
-| ---------- | ------ | --------------------------- |
-| Node.js    | 20     | Runtime                     |
-| Express    | 4.18.2 | Framework Web               |
-| JWT        | 9.0.2  | Autenticação                |
-| Bcrypt     | 2.4.3  | Hash de senhas              |
-| Helmet     | 7.1.0  | Segurança HTTP              |
-| Morgan     | 1.10.0 | Logger                      |
-| CORS       | 2.8.5  | Cross-Origin Resource Share |
+| Tecnologia       | Versão  | Uso                          |
+|------------------|---------|------------------------------|
+| Node.js          | 20      | Runtime                      |
+| Express          | 4.18.2  | Framework Web                |
+| MongoDB          | 7       | Banco de dados NoSQL         |
+| Mongoose         | 8.0.3   | ODM (Object Data Modeling)   |
+| JWT              | 9.0.2   | Autenticação                 |
+| Bcrypt           | 2.4.3   | Hash de senhas               |
+| Helmet           | 7.1.0   | Segurança HTTP               |
+| Morgan           | 1.10.0  | Logger                       |
+| CORS             | 2.8.5   | Cross-Origin Resource Share  |
 
 ---
 
@@ -350,7 +355,6 @@ docker-compose up --build -d
 ### Cloud Deploy
 
 #### Backend (Railway / Render)
-
 1. Push pasta `/api` para Git
 2. Configurar variáveis:
    - `PORT=3000`
@@ -358,7 +362,6 @@ docker-compose up --build -d
 3. Deploy automático
 
 #### Frontend (Vercel / Netlify)
-
 1. Push raiz do projeto
 2. Build command: `npm run build`
 3. Output directory: `dist`
@@ -372,15 +375,16 @@ docker-compose up --build -d
 
 ```env
 PORT=3000
-JWT_SECRET=CashFlow-super-secret-key-2024
-JWT_EXPIRES=7d
 NODE_ENV=production
+MONGODB_URI=mongodb://localhost:27017/finexa
+JWT_SECRET=finexa-super-secret-key-2024
+JWT_EXPIRES_IN=7d
 ```
 
 ### Frontend (`.env`)
 
 ```env
-VITE_API_URL=https://api.CashFlow.com/api
+VITE_API_URL=https://api.finexa.com/api
 ```
 
 ---
@@ -388,7 +392,6 @@ VITE_API_URL=https://api.CashFlow.com/api
 ## 📊 Modelo de Dados
 
 ### User
-
 ```typescript
 {
   id: string,              // UUID v4
@@ -400,7 +403,6 @@ VITE_API_URL=https://api.CashFlow.com/api
 ```
 
 ### Entry
-
 ```typescript
 {
   id: string,              // UUID v4
@@ -419,7 +421,7 @@ VITE_API_URL=https://api.CashFlow.com/api
 
 ## 🎯 Próximas Features (Roadmap)
 
-- [ ] PostgreSQL / MongoDB (substituir JSON)
+- [x] ~~MongoDB NoSQL Database~~ ✅
 - [ ] Categorias fixas com ícones
 - [ ] Gráficos e relatórios (Chart.js)
 - [ ] Exportação CSV/PDF
@@ -432,4 +434,4 @@ VITE_API_URL=https://api.CashFlow.com/api
 
 ---
 
-**CashFlow v2.0** - Arquitetura Profissional de Controle Financeiro 💎
+**CASHFLOW v2.0** - Arquitetura Profissional de Controle Financeiro 💎

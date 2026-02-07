@@ -1,228 +1,128 @@
-import type { CardBrand, EntryType, ExpenseEntry } from "@/types";
+// ============================================================================
+// CASHFLOW LOCAL API (Mock API Stand-alone)
+// Substitui completamente o servidor Vercel/MongoDB. Tudo fica salvo no celular!
+// ============================================================================
 
-// ════════════════════════════════════════════════════════════
-//  CashFlow API CLIENT v2.0
-//  Conecta ao backend CashFlow rodando separadamente
-//
-//  Configure a URL da API:
-//    - Local:     http://localhost:3000/api
-//    - Produção:  defina VITE_API_URL no .env
-// ════════════════════════════════════════════════════════════
+export type Entry = {
+  id: string; // Exigido pelo Frontend como obrigatório
+  description: string;
+  amount: number;
+  type: 'gasto' | 'entrada';
+  cardBrand?: any;
+  createdAt: string; // Exigido pelo Frontend como obrigatório
+};
 
-const API_BASE =
-  (import.meta as any).env?.VITE_API_URL || "http://localhost:3000/api";
+const STORAGE_KEY = 'cashflow_entries';
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-let authToken: string | null = localStorage.getItem("CashFlow_api_token");
+function getLocal(): Entry[] {
+  const data = localStorage.getItem(STORAGE_KEY);
+  return data ? JSON.parse(data) : [];
+}
+
+function saveLocal(data: Entry[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
 
 export function setAuthToken(token: string | null) {
-  authToken = token;
   if (token) {
-    localStorage.setItem("CashFlow_api_token", token);
+    localStorage.setItem('cashflow_api_token', token);
   } else {
-    localStorage.removeItem("CashFlow_api_token");
-    localStorage.removeItem("CashFlow_user_name");
+    localStorage.removeItem('cashflow_api_token');
   }
 }
 
-export function getAuthToken(): string | null {
-  return authToken;
-}
-
-// ── Fetch Helper ────────────────────────────────────────────
-async function apiFetch<T>(
-  endpoint: string,
-  options?: RequestInit,
-): Promise<{ ok: true; data: T } | { ok: false; error: { message: string } }> {
-  try {
-    const headers: Record<string, string> = {
-      "Content-Type": "application/json",
-    };
-    if (authToken) {
-      headers["Authorization"] = `Bearer ${authToken}`;
+// ----------------------------------------------------------------------------
+// AUTHENTICATION
+// ----------------------------------------------------------------------------
+export async function apiLogin(payload: any): Promise<{ok: boolean, data?: any, error?: any}> {
+  await delay(600); 
+  return { 
+    ok: true, 
+    data: {
+      token: 'local-mock-token-777', 
+      user: { name: payload.username || 'Usuário' } 
     }
-
-    const res = await fetch(`${API_BASE}${endpoint}`, {
-      ...options,
-      headers: { ...headers, ...(options?.headers as Record<string, string>) },
-    });
-
-    const body = await res.json().catch(() => ({}));
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        setAuthToken(null);
-        window.location.reload();
-      }
-      return {
-        ok: false,
-        error: body.error || { message: `Erro ${res.status}` },
-      };
-    }
-
-    // A API v2 retorna { ok, data, ... } para entries
-    // e { ok, token, user } para login
-    // Normalizamos para sempre retornar .data
-    if (body.data !== undefined) {
-      return { ok: true, data: body.data };
-    }
-    return { ok: true, data: body };
-  } catch {
-    return {
-      ok: false,
-      error: {
-        message: "Falha de conexão. Verifique se a API está rodando.",
-      },
-    };
-  }
-}
-
-// ── Auth ─────────────────────────────────────────────────────
-export type LoginInput = { username: string; password: string };
-export type RegisterInput = {
-  username: string;
-  password: string;
-  name?: string;
-};
-
-export type AuthResult = {
-  token: string;
-  user: { id: string; username: string; name: string };
-};
-
-export async function apiLogin(input: LoginInput) {
-  const res = await fetch(`${API_BASE}/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    return {
-      ok: false as const,
-      error: body.error || { message: "Erro no login" },
-    };
-  }
-  return {
-    ok: true as const,
-    data: { token: body.token, user: body.user } as AuthResult,
   };
 }
 
-export async function apiRegister(input: RegisterInput) {
-  const res = await fetch(`${API_BASE}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
-  });
-  const body = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    return {
-      ok: false as const,
-      error: body.error || { message: "Erro no registro" },
-    };
-  }
-  return {
-    ok: true as const,
-    data: { token: body.token, user: body.user } as AuthResult,
-  };
-}
-
-// ── Entries ──────────────────────────────────────────────────
-export type CreateEntryInput = {
-  type: EntryType;
-  amount: number | string;
-  description?: string;
-  cardBrand?: CardBrand;
-};
-
-export type ListParams = {
-  type?: EntryType | "all";
-  cardBrand?: CardBrand | "all";
-  q?: string;
-};
-
-export type ListResult = {
-  total: number;
-  income: number;
-  expenses: number;
-  balance: number;
-  data: ExpenseEntry[];
-};
-
-export async function apiListEntries(params: ListParams = {}) {
-  const query = new URLSearchParams();
-  if (params.type && params.type !== "all") query.set("type", params.type);
-  if (params.q) query.set("q", params.q);
-  if (params.cardBrand && params.cardBrand !== "all")
-    query.set("cardBrand", params.cardBrand);
-
-  // A API v2 retorna { ok, total, income, expenses, balance, data }
-  const res = await fetch(`${API_BASE}/entries?${query.toString()}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
-    },
-  });
-
-  const body = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    if (res.status === 401) {
-      setAuthToken(null);
-      window.location.reload();
+export async function apiRegister(payload: any): Promise<{ok: boolean, data?: any, error?: any}> {
+  await delay(600);
+  return { 
+    ok: true, 
+    data: {
+      token: 'local-mock-token-777', 
+      user: { name: payload.name || payload.username || 'Usuário' } 
     }
-    return { ok: false as const, error: body.error || { message: "Erro" } };
-  }
-
-  return {
-    ok: true as const,
-    data: body.data as ExpenseEntry[],
-    total: body.total as number,
-    income: body.income as number,
-    expenses: body.expenses as number,
-    balance: body.balance as number,
   };
 }
 
-export async function apiCreateEntry(input: CreateEntryInput) {
-  // Validação local rápida
-  const amount =
-    typeof input.amount === "string"
-      ? Number(input.amount.replace(",", "."))
-      : input.amount;
-
-  if (!amount || amount <= 0) {
-    return {
-      ok: false as const,
-      error: { message: "Valor deve ser maior que zero." },
-    };
-  }
-  if (!input.description?.trim()) {
-    return {
-      ok: false as const,
-      error: { message: "Descrição é obrigatória." },
-    };
+// ----------------------------------------------------------------------------
+// ENTRIES
+// ----------------------------------------------------------------------------
+export async function apiListEntries(filters?: any) {
+  await delay(300);
+  let entries = getLocal();
+  entries.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  
+  if (filters?.type && filters.type !== 'todos') {
+    entries = entries.filter(e => e.type === filters.type);
   }
 
-  return apiFetch<ExpenseEntry>("/entries", {
-    method: "POST",
-    body: JSON.stringify({
-      type: input.type,
-      amount,
-      description: input.description?.trim(),
-      ...(input.cardBrand ? { cardBrand: input.cardBrand } : {}),
-    }),
-  });
+  const allEntries = getLocal();
+  const income = allEntries.filter(e => e.type === 'entrada').reduce((acc, curr) => acc + curr.amount, 0);
+  const expenses = allEntries.filter(e => e.type === 'gasto').reduce((acc, curr) => acc + curr.amount, 0);
+
+  return { 
+    ok: true, 
+    data: entries,
+    income,
+    expenses,
+    balance: income - expenses,
+    error: undefined
+  };
 }
 
-export async function apiDeleteEntry(id: string) {
-  return apiFetch<{ id: string }>(`/entries/${id}`, { method: "DELETE" });
+export async function apiCreateEntry(data: any): Promise<{ok: boolean, data?: any, error?: any}> {
+  await delay(400);
+  const entries = getLocal();
+  const newEntry: Entry = {
+    ...data,
+    amount: Number(data.amount),
+    id: Math.random().toString(36).substr(2, 9),
+    createdAt: new Date().toISOString()
+  };
+  entries.push(newEntry);
+  saveLocal(entries);
+  return { ok: true, data: newEntry };
 }
 
-export async function apiDeleteAll() {
-  return apiFetch<{ removed: number }>("/entries", { method: "DELETE" });
+export async function apiDeleteEntry(id: string): Promise<{ok: boolean, error?: any}> {
+  await delay(300);
+  let entries = getLocal();
+  entries = entries.filter(e => e.id !== id);
+  saveLocal(entries);
+  return { ok: true };
 }
 
-export async function apiSeedDemo() {
-  return apiFetch<{ seeded: number }>("/entries/seed", { method: "POST" });
+// ----------------------------------------------------------------------------
+// SETTINGS
+// ----------------------------------------------------------------------------
+export async function apiSeedDemo(): Promise<{ok: boolean, error?: any}> {
+  await delay(500);
+  const entries = getLocal();
+  const demoData: Entry[] = [
+    { id: 'd1', description: 'Salário Mensal', amount: 5500, type: 'entrada', createdAt: new Date(Date.now() - 86400000 * 2).toISOString() },
+    { id: 'd2', description: 'Supermercado', amount: 850.90, type: 'gasto', cardBrand: 'mastercard', createdAt: new Date(Date.now() - 86400000 * 1).toISOString() },
+    { id: 'd3', description: 'Uber', amount: 45.50, type: 'gasto', cardBrand: 'visa', createdAt: new Date().toISOString() },
+    { id: 'd4', description: 'Freelance Design', amount: 1200, type: 'entrada', createdAt: new Date().toISOString() }
+  ];
+  saveLocal([...entries, ...demoData]);
+  return { ok: true };
+}
+
+export async function apiDeleteAll(): Promise<{ok: boolean, error?: any}> {
+  await delay(300);
+  localStorage.removeItem(STORAGE_KEY);
+  return { ok: true };
 }

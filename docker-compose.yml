@@ -1,10 +1,10 @@
 # ============================================================
-#  CashFlow APP (Frontend) — Docker Compose (Isolado)
+#  CASHFLOW APP (Frontend) — Docker Compose (Isolado)
 #
 #  Para subir:  docker-compose up --build -d
 #  Para parar:  docker-compose down
 #
-#  ⚠️  A CashFlow API deve estar rodando separadamente!
+#  ⚠️  A CASHFLOW API deve estar rodando separadamente!
 #      Veja a pasta /api para subir o backend.
 # ============================================================
 
@@ -13,7 +13,7 @@ version: "3.8"
 services:
   app:
     build: .
-    container_name: CashFlow-app
+    container_name: cashflow-app
     restart: unless-stopped
     ports:
       - "80:80"

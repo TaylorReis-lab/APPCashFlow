@@ -1,6 +1,6 @@
-# 🚀 CashFlow - Guia de Início Rápido
+# 🚀 FINEXA - Guia de Início Rápido
 
-Siga este guia para ter o **CashFlow** rodando em minutos!
+Siga este guia para ter o **FINEXA** rodando em minutos!
 
 ---
 
@@ -9,8 +9,8 @@ Siga este guia para ter o **CashFlow** rodando em minutos!
 ### 1️⃣ Clonar o Repositório
 
 ```bash
-git clone https://github.com/seu-usuario/CashFlow.git
-cd CashFlow
+git clone https://github.com/seu-usuario/finexa.git
+cd finexa
 ```
 
 ### 2️⃣ Iniciar o Backend (API)
@@ -24,7 +24,6 @@ npm start
 ✅ **API rodando em:** `http://localhost:3000`
 
 **Credenciais padrão:**
-
 - Usuário: `admin`
 - Senha: `admin123`
 
@@ -117,7 +116,6 @@ Content-Type: application/json
 ```
 
 **Resposta:**
-
 ```json
 {
   "ok": true,
@@ -164,17 +162,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ### No celular real (mesma rede Wi-Fi):
 
 1. Descubra o IP do seu computador:
-
    ```bash
    # Linux/Mac
    ifconfig | grep inet
-
+   
    # Windows
    ipconfig
    ```
 
 2. No celular, acesse:
-
    ```
    http://SEU_IP:5173
    ```
@@ -182,7 +178,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 3. Exemplo: `http://192.168.1.100:5173`
 
 **⚠️ Importante:** Altere a URL da API em `.env`:
-
 ```env
 VITE_API_URL=http://SEU_IP:3000/api
 ```
@@ -229,7 +224,6 @@ docker-compose down               # Parar
 ### Alterar porta da API
 
 Edite `api/.env`:
-
 ```env
 PORT=5000
 ```
@@ -237,7 +231,6 @@ PORT=5000
 ### Alterar URL da API no App
 
 Edite `.env` na raiz:
-
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
@@ -245,7 +238,6 @@ VITE_API_URL=http://localhost:5000/api
 ### Alterar chave JWT
 
 Edite `api/.env`:
-
 ```env
 JWT_SECRET=minha-chave-super-secreta
 ```
@@ -253,7 +245,6 @@ JWT_SECRET=minha-chave-super-secreta
 ### Alterar tempo de expiração do token
 
 Edite `api/.env`:
-
 ```env
 JWT_EXPIRES=30d
 ```
@@ -263,7 +254,7 @@ JWT_EXPIRES=30d
 ## 📂 Estrutura de Pastas
 
 ```
-CashFlow/
+finexa/
 ├── api/                    ← Backend (Node.js)
 │   ├── src/               ← Código-fonte
 │   ├── data/              ← Dados persistidos
@@ -283,20 +274,17 @@ CashFlow/
 ## 🎯 Próximos Passos
 
 ### 1. Explorar o App
-
 - ✅ Criar lançamentos de entrada e gastos
 - ✅ Filtrar por tipo, data, bandeira
 - ✅ Ver dashboard com saldo total
 - ✅ Inserir dados de demonstração
 
 ### 2. Testar a API
-
 - 📖 Leia `api/INSOMNIA_GUIDE.md`
 - 🧪 Teste todos os endpoints
 - 🔐 Experimente criar novos usuários
 
 ### 3. Customizar
-
 - 🎨 Altere cores em `tailwind.config.js`
 - 📊 Adicione novas features
 - 🌐 Faça deploy na nuvem
@@ -308,7 +296,6 @@ CashFlow/
 ### "Cannot connect to API"
 
 ✅ **Verifique:**
-
 1. A API está rodando? (`http://localhost:3000/api/health`)
 2. A porta 3000 está livre?
 3. O firewall está bloqueando?
@@ -316,7 +303,6 @@ CashFlow/
 ### "Token inválido"
 
 ✅ **Faça:**
-
 1. Logout no app
 2. Login novamente
 3. O token expira em 7 dias (padrão)
@@ -324,7 +310,6 @@ CashFlow/
 ### "Port already in use"
 
 ✅ **Solução:**
-
 ```bash
 # Linux/Mac
 lsof -ti:3000 | xargs kill
@@ -337,7 +322,6 @@ taskkill /PID <PID> /F
 ### Docker não inicia
 
 ✅ **Verifique:**
-
 1. Docker está instalado e rodando?
    ```bash
    docker --version
@@ -371,18 +355,18 @@ taskkill /PID <PID> /F
 
 ## 📄 Licença
 
-MIT License - CashFlow © 2024
+MIT License - FINEXA © 2024
 
 ---
 
 ## 💬 Suporte
 
-- 📧 Email: suporte@CashFlow.com
-- 💬 Discord: discord.gg/CashFlow
-- 🐛 Issues: github.com/seu-usuario/CashFlow/issues
+- 📧 Email: suporte@finexa.com
+- 💬 Discord: discord.gg/finexa
+- 🐛 Issues: github.com/seu-usuario/finexa/issues
 
 ---
 
-**Bem-vindo ao CashFlow! 💎**
+**Bem-vindo ao FINEXA! 💎**
 
 Desenvolvido com ❤️ usando React, Node.js e Docker.

@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiListEntries } from "@/lib/api";
-import {
-  ArrowUpCircle,
-  ArrowDownCircle,
-  Wallet,
-  Plus,
-  Wifi,
-  WifiOff,
-} from "lucide-react";
+import { ArrowUpCircle, ArrowDownCircle, Wallet, Plus, Wifi, WifiOff } from "lucide-react";
 import { cn } from "@/utils/cn";
 import type { ExpenseEntry } from "@/types";
 
@@ -22,7 +15,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
   const [connected, setConnected] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const userName = localStorage.getItem("CashFlow_user_name") || "Usuário";
+  const userName = localStorage.getItem("cashflow_user_name") || "Usuário";
 
   useEffect(() => {
     async function fetchEntries() {
@@ -45,10 +38,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
   }, [refreshKey]);
 
   const moneyBRL = (n: number) =>
-    new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(n);
+    new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(n);
 
   const recentEntries = entries.slice(0, 5);
 
@@ -56,20 +46,16 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
     <div className="p-4 space-y-6">
       <header className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Olá, {userName}! 👋
-          </h1>
+          <h1 className="text-2xl font-bold tracking-tight">Olá, {userName}! 👋</h1>
           <p className="text-sm text-slate-500">Seu resumo financeiro</p>
         </div>
         <div className="flex items-center gap-2">
-          <div
-            className={cn(
-              "flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold",
-              connected
-                ? "bg-emerald-50 text-emerald-600"
-                : "bg-rose-50 text-rose-600",
-            )}
-          >
+          <div className={cn(
+            "flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold",
+            connected
+              ? "bg-emerald-50 text-emerald-600"
+              : "bg-rose-50 text-rose-600"
+          )}>
             {connected ? <Wifi size={10} /> : <WifiOff size={10} />}
             {connected ? "Online" : "Offline"}
           </div>
@@ -94,9 +80,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
               </div>
               <div>
                 <p className="text-[10px] uppercase opacity-70">Entradas</p>
-                <p className="text-sm font-semibold">
-                  {moneyBRL(stats.income)}
-                </p>
+                <p className="text-sm font-semibold">{moneyBRL(stats.income)}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -105,9 +89,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
               </div>
               <div>
                 <p className="text-[10px] uppercase opacity-70">Saídas</p>
-                <p className="text-sm font-semibold">
-                  {moneyBRL(stats.expenses)}
-                </p>
+                <p className="text-sm font-semibold">{moneyBRL(stats.expenses)}</p>
               </div>
             </div>
           </div>
@@ -118,9 +100,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
 
       {!connected && (
         <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-center">
-          <p className="text-xs font-bold text-amber-700">
-            ⚠️ API Desconectada
-          </p>
+          <p className="text-xs font-bold text-amber-700">⚠️ API Desconectada</p>
           <p className="mt-1 text-[10px] text-amber-600">
             Verifique se a API está rodando em localhost:3000
           </p>
@@ -174,7 +154,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
                       "rounded-xl p-2.5",
                       e.type === "gasto"
                         ? "bg-rose-50 text-rose-600"
-                        : "bg-emerald-50 text-emerald-600",
+                        : "bg-emerald-50 text-emerald-600"
                     )}
                   >
                     {e.type === "gasto" ? (
@@ -196,7 +176,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
                 <p
                   className={cn(
                     "text-sm font-bold",
-                    e.type === "gasto" ? "text-rose-600" : "text-emerald-600",
+                    e.type === "gasto" ? "text-rose-600" : "text-emerald-600"
                   )}
                 >
                   {e.type === "gasto" ? "-" : "+"} {moneyBRL(e.amount)}

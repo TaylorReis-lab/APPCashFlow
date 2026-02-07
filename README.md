@@ -1,4 +1,4 @@
-# 💎 CashFlow — Sistema de Controle Financeiro Profissional
+# 💎 CASHFLOW — Sistema de Controle Financeiro Profissional
 
 Projeto fullstack com **App Mobile** (React) e **API REST** (Node.js/Express) **100% separados**, cada um com arquitetura profissional e Docker.
 
@@ -8,6 +8,24 @@ Projeto fullstack com **App Mobile** (React) e **API REST** (Node.js/Express) **
 
 ```
 /
+├── api/                      ← 🔌 CASHFLOW API (Backend Isolado - Arquitetura MVC)
+│   ├── src/
+│   │   ├── server.js         │  Servidor Express principal
+│   │   ├── routes/           │  Definição de rotas
+│   │   ├── controllers/      │  Controladores (lógica de requisição)
+│   │   ├── services/         │  Serviços (lógica de negócio)
+│   │   ├── models/           │  Modelos (acesso a dados)
+│   │   ├── middlewares/      │  Middlewares (autenticação, etc)
+│   │   └── validators/       │  Validadores de entrada
+│   ├── package.json          │  Dependências do backend
+│   ├── Dockerfile            │  Container Docker da API
+│   ├── docker-compose.yml    │  Orquestração isolada
+│   ├── .env.example          │  Variáveis de ambiente
+│   ├── README.md             │  Documentação completa da API
+│   └── data/                 │  Dados persistidos (auto-gerado)
+│       ├── entries.json      │
+│       └── users.json        │
+│
 ├── src/                      ← 📱 APP (Frontend Isolado)
 │   ├── App.tsx               │  Componente principal
 │   ├── main.tsx              │  Entrypoint
@@ -34,7 +52,16 @@ Projeto fullstack com **App Mobile** (React) e **API REST** (Node.js/Express) **
 
 ## 🚀 Como Rodar
 
-### 1. Subir o App (Frontend)
+### 1. Subir a API (Backend)
+
+```bash
+cd api
+npm install
+npm start
+# API rodando em http://localhost:3000
+```
+
+### 2. Subir o App (Frontend)
 
 ```bash
 # Na raiz do projeto
@@ -47,8 +74,14 @@ npm run dev
 
 ## 🐳 Deploy com Docker
 
-### Subir o App:
+### Subir a API:
+```bash
+cd api
+docker-compose up --build -d
+# API rodando em http://localhost:3000
+```
 
+### Subir o App:
 ```bash
 # Na raiz do projeto
 docker-compose up --build -d
