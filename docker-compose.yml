@@ -1,0 +1,20 @@
+# ============================================================
+#  FINEXA APP (Frontend) — Docker Compose (Isolado)
+#
+#  Para subir:  docker-compose up --build -d
+#  Para parar:  docker-compose down
+#
+#  ⚠️  A FINEXA API deve estar rodando separadamente!
+#      Veja a pasta /api para subir o backend.
+# ============================================================
+
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: finexa-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
