@@ -17,7 +17,7 @@ type Tab = "dashboard" | "add" | "history" | "settings";
 
 export function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return !!localStorage.getItem("finexa_api_token");
+    return !!localStorage.getItem("CashFlow_api_token");
   });
   const [activeTab, setActiveTab] = useState<Tab>("dashboard");
   const [refreshKey, setRefreshKey] = useState(0);
@@ -31,7 +31,7 @@ export function App() {
 
   const handleLogout = () => {
     setAuthToken(null);
-    localStorage.removeItem("finexa_user_name");
+    localStorage.removeItem("CashFlow_user_name");
     setIsAuthenticated(false);
   };
 

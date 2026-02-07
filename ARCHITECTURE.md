@@ -1,6 +1,6 @@
-# 🏗️ Arquitetura do Sistema FINEXA
+# 🏗️ Arquitetura do Sistema CashFlow
 
-Documentação completa da arquitetura do sistema de controle financeiro **FINEXA**.
+Documentação completa da arquitetura do sistema de controle financeiro **CashFlow**.
 
 ---
 
@@ -9,7 +9,7 @@ Documentação completa da arquitetura do sistema de controle financeiro **FINEX
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                                                             │
-│                    FINEXA SYSTEM v2.0                       │
+│                    CashFlow SYSTEM v2.0                       │
 │          Sistema de Controle Financeiro Profissional       │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -41,7 +41,7 @@ Documentação completa da arquitetura do sistema de controle financeiro **FINEX
 ## 🗂️ Estrutura de Diretórios
 
 ```
-finexa/
+CashFlow/
 │
 ├── 📱 APP (FRONTEND)
 │   ├── src/
@@ -143,7 +143,7 @@ finexa/
      │ (Armazena token)
      ▼
 localStorage
-"finexa_api_token"
+"CashFlow_api_token"
 ```
 
 ### 2. Criar Lançamento
@@ -293,25 +293,27 @@ CLIENT ──GET /api/entries?type=gasto&q=restaurante──► API
 ## 📦 Tecnologias Utilizadas
 
 ### Frontend
-| Tecnologia       | Versão  | Uso                          |
-|------------------|---------|------------------------------|
-| React            | 19.2.3  | UI Library                   |
-| TypeScript       | 5.9.3   | Type Safety                  |
-| Vite             | 7.2.4   | Build Tool                   |
-| Tailwind CSS     | 4.1.17  | Styling                      |
-| Lucide React     | 0.563.0 | Ícones                       |
-| Nginx            | alpine  | Web Server + HTTPS           |
+
+| Tecnologia   | Versão  | Uso                |
+| ------------ | ------- | ------------------ |
+| React        | 19.2.3  | UI Library         |
+| TypeScript   | 5.9.3   | Type Safety        |
+| Vite         | 7.2.4   | Build Tool         |
+| Tailwind CSS | 4.1.17  | Styling            |
+| Lucide React | 0.563.0 | Ícones             |
+| Nginx        | alpine  | Web Server + HTTPS |
 
 ### Backend
-| Tecnologia       | Versão  | Uso                          |
-|------------------|---------|------------------------------|
-| Node.js          | 20      | Runtime                      |
-| Express          | 4.18.2  | Framework Web                |
-| JWT              | 9.0.2   | Autenticação                 |
-| Bcrypt           | 2.4.3   | Hash de senhas               |
-| Helmet           | 7.1.0   | Segurança HTTP               |
-| Morgan           | 1.10.0  | Logger                       |
-| CORS             | 2.8.5   | Cross-Origin Resource Share  |
+
+| Tecnologia | Versão | Uso                         |
+| ---------- | ------ | --------------------------- |
+| Node.js    | 20     | Runtime                     |
+| Express    | 4.18.2 | Framework Web               |
+| JWT        | 9.0.2  | Autenticação                |
+| Bcrypt     | 2.4.3  | Hash de senhas              |
+| Helmet     | 7.1.0  | Segurança HTTP              |
+| Morgan     | 1.10.0 | Logger                      |
+| CORS       | 2.8.5  | Cross-Origin Resource Share |
 
 ---
 
@@ -348,6 +350,7 @@ docker-compose up --build -d
 ### Cloud Deploy
 
 #### Backend (Railway / Render)
+
 1. Push pasta `/api` para Git
 2. Configurar variáveis:
    - `PORT=3000`
@@ -355,6 +358,7 @@ docker-compose up --build -d
 3. Deploy automático
 
 #### Frontend (Vercel / Netlify)
+
 1. Push raiz do projeto
 2. Build command: `npm run build`
 3. Output directory: `dist`
@@ -368,7 +372,7 @@ docker-compose up --build -d
 
 ```env
 PORT=3000
-JWT_SECRET=finexa-super-secret-key-2024
+JWT_SECRET=CashFlow-super-secret-key-2024
 JWT_EXPIRES=7d
 NODE_ENV=production
 ```
@@ -376,7 +380,7 @@ NODE_ENV=production
 ### Frontend (`.env`)
 
 ```env
-VITE_API_URL=https://api.finexa.com/api
+VITE_API_URL=https://api.CashFlow.com/api
 ```
 
 ---
@@ -384,6 +388,7 @@ VITE_API_URL=https://api.finexa.com/api
 ## 📊 Modelo de Dados
 
 ### User
+
 ```typescript
 {
   id: string,              // UUID v4
@@ -395,6 +400,7 @@ VITE_API_URL=https://api.finexa.com/api
 ```
 
 ### Entry
+
 ```typescript
 {
   id: string,              // UUID v4
@@ -426,4 +432,4 @@ VITE_API_URL=https://api.finexa.com/api
 
 ---
 
-**FINEXA v2.0** - Arquitetura Profissional de Controle Financeiro 💎
+**CashFlow v2.0** - Arquitetura Profissional de Controle Financeiro 💎

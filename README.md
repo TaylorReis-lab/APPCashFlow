@@ -1,4 +1,4 @@
-# 💎 FINEXA — Sistema de Controle Financeiro Profissional
+# 💎 CashFlow — Sistema de Controle Financeiro Profissional
 
 Projeto fullstack com **App Mobile** (React) e **API REST** (Node.js/Express) **100% separados**, cada um com arquitetura profissional e Docker.
 
@@ -48,6 +48,7 @@ npm run dev
 ## 🐳 Deploy com Docker
 
 ### Subir o App:
+
 ```bash
 # Na raiz do projeto
 docker-compose up --build -d

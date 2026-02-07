@@ -22,7 +22,7 @@ export function Dashboard({ refreshKey, onNavigate }: DashboardProps) {
   const [connected, setConnected] = useState(true);
   const [loading, setLoading] = useState(true);
 
-  const userName = localStorage.getItem("finexa_user_name") || "Usuário";
+  const userName = localStorage.getItem("CashFlow_user_name") || "Usuário";
 
   useEffect(() => {
     async function fetchEntries() {

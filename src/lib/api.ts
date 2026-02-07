@@ -1,8 +1,8 @@
 import type { CardBrand, EntryType, ExpenseEntry } from "@/types";
 
 // ════════════════════════════════════════════════════════════
-//  FINEXA API CLIENT v2.0
-//  Conecta ao backend FINEXA rodando separadamente
+//  CashFlow API CLIENT v2.0
+//  Conecta ao backend CashFlow rodando separadamente
 //
 //  Configure a URL da API:
 //    - Local:     http://localhost:3000/api
@@ -12,15 +12,15 @@ import type { CardBrand, EntryType, ExpenseEntry } from "@/types";
 const API_BASE =
   (import.meta as any).env?.VITE_API_URL || "http://localhost:3000/api";
 
-let authToken: string | null = localStorage.getItem("finexa_api_token");
+let authToken: string | null = localStorage.getItem("CashFlow_api_token");
 
 export function setAuthToken(token: string | null) {
   authToken = token;
   if (token) {
-    localStorage.setItem("finexa_api_token", token);
+    localStorage.setItem("CashFlow_api_token", token);
   } else {
-    localStorage.removeItem("finexa_api_token");
-    localStorage.removeItem("finexa_user_name");
+    localStorage.removeItem("CashFlow_api_token");
+    localStorage.removeItem("CashFlow_user_name");
   }
 }
 

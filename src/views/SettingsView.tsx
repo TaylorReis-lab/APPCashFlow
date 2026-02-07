@@ -8,7 +8,12 @@ interface SettingsViewProps {
 
 export function SettingsView({ onReset, onLogout }: SettingsViewProps) {
   const handleClear = async () => {
-    if (!confirm("Tem certeza que deseja excluir TODOS os registros? Esta ação não pode ser desfeita.")) return;
+    if (
+      !confirm(
+        "Tem certeza que deseja excluir TODOS os registros? Esta ação não pode ser desfeita.",
+      )
+    )
+      return;
     const res = await apiDeleteAll();
     if (res.ok) {
       onReset();
@@ -24,7 +29,9 @@ export function SettingsView({ onReset, onLogout }: SettingsViewProps) {
       onReset();
       alert("Dados de demonstração inseridos!");
     } else {
-      alert("Erro ao inserir dados de demonstração. Verifique se a API está rodando.");
+      alert(
+        "Erro ao inserir dados de demonstração. Verifique se a API está rodando.",
+      );
     }
   };
 
@@ -48,7 +55,9 @@ export function SettingsView({ onReset, onLogout }: SettingsViewProps) {
               <Server size={18} />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-bold text-slate-700">FINEXA API (MVC)</p>
+              <p className="text-xs font-bold text-slate-700">
+                CashFlow API (MVC)
+              </p>
               <p className="text-[10px] text-slate-400 truncate">
                 http://localhost:3000/api
               </p>
@@ -88,9 +97,7 @@ export function SettingsView({ onReset, onLogout }: SettingsViewProps) {
                 <Trash2 size={20} />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-bold text-rose-600">
-                  Limpar Tudo
-                </p>
+                <p className="text-sm font-bold text-rose-600">Limpar Tudo</p>
                 <p className="text-[10px] text-slate-400">
                   Excluir permanentemente todos os seus registros da API.
                 </p>

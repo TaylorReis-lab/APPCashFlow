@@ -1,5 +1,5 @@
 # ============================================================
-#  FINEXA APP (Frontend) — Dockerfile
+#  CashFlow APP (Frontend) — Dockerfile
 #  Build com Vite + Serve com Nginx
 # ============================================================
 

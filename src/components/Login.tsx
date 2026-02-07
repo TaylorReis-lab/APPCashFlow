@@ -32,7 +32,7 @@ export function Login({ onSuccess }: LoginProps) {
     if (mode === "login") {
       const res = await apiLogin({ username, password });
       if (res.ok) {
-        localStorage.setItem("finexa_user_name", res.data.user.name);
+        localStorage.setItem("CashFlow_user_name", res.data.user.name);
         onSuccess(res.data.token);
       } else {
         setError(res.error.message || "Credenciais inválidas.");
@@ -50,7 +50,7 @@ export function Login({ onSuccess }: LoginProps) {
         name: name || username,
       });
       if (res.ok) {
-        localStorage.setItem("finexa_user_name", res.data.user.name);
+        localStorage.setItem("CashFlow_user_name", res.data.user.name);
         onSuccess(res.data.token);
       } else {
         setError(res.error.message || "Erro ao criar conta.");
@@ -67,7 +67,7 @@ export function Login({ onSuccess }: LoginProps) {
           <div className="mb-4 rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-600 p-5 text-white shadow-xl shadow-indigo-200">
             <ShieldCheck size={36} strokeWidth={1.5} />
           </div>
-          <h1 className="text-2xl font-extrabold tracking-tight">FINEXA</h1>
+          <h1 className="text-2xl font-extrabold tracking-tight">CashFlow</h1>
           <p className="text-xs text-slate-500 mt-1 font-medium">
             Controle Financeiro Profissional
           </p>
